@@ -30,10 +30,22 @@ parser.add_argument(
     help = 'The format type of the provided file.',
     choices = [
         'listed_verses',
-        'referenced_verse',
+        'referenced_verses',
         'outline'
     ],
-    required = True
+    default = 'referenced_verses',
+    required = False
+)
+
+parser.add_argument(
+    '-m',
+    '--mode',
+    help = "The mode of the game, which will determine the engine.",
+    choices = [
+        'fitb'
+    ],
+    default = 'fitb',
+    required = False
 )
 
 def get_parser():
