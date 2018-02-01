@@ -9,7 +9,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = "Dwell in you richly",
+    name = "diyr",
     version = "0.0.1",
     author = "Miguel Alex Cantu",
     author_email = "miguel.can2@gmail.com	",
@@ -19,6 +19,8 @@ setup(
     keywords = "Study Bible, Memorize Bible",
     packages=['diyr'],
     long_description=read('README.md'),
+    url = 'https://github.com/alextricity25/dwell_in_you_richly',
+    download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1.tar.gz',
     entry_points = {
         'console_scripts': [
             'diyr = diyr.main:main'
