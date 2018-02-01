@@ -18,7 +18,7 @@ setup(
     license = "BSD",
     keywords = "Study Bible, Memorize Bible",
     packages=['diyr'],
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     url = 'https://github.com/alextricity25/dwell_in_you_richly',
     download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1.tar.gz',
     entry_points = {
