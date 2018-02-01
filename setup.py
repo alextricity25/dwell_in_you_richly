@@ -17,7 +17,11 @@ setup(
                    "with verses, references, and ministry excerpts."),
     license = "BSD",
     keywords = "Study Bible, Memorize Bible",
-    packages=['diyr'],
+    packages=[
+        'diyr',
+        'diyr.formattypes',
+        'diyr.engines'
+    ],
     long_description=read('README.rst'),
     url = 'https://github.com/alextricity25/dwell_in_you_richly',
     download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1a.tar.gz',
