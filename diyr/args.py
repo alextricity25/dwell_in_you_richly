@@ -10,6 +10,10 @@
 
 
 import argparse
+import os
+
+example_file_path  = (os.path.dirname(os.path.realpath(__file__)) +
+"/../example_format_types/listed_verses.txt")
 
 parser = argparse.ArgumentParser(
     usage = '%(prog)s',
@@ -21,7 +25,8 @@ parser.add_argument(
     '-f',
     '--file',
     help = 'The file of a correct format type to hollow',
-    required = True
+    required = False,
+    default = example_file_path
 )
 
 parser.add_argument(
@@ -33,7 +38,7 @@ parser.add_argument(
         'referenced_verses',
         'outline'
     ],
-    default = 'referenced_verses',
+    default = 'listed_verses',
     required = False
 )
 
