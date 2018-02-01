@@ -24,7 +24,7 @@ setup(
     ],
     long_description=read('README.rst'),
     url = 'https://github.com/alextricity25/dwell_in_you_richly',
-    download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1a.tar.gz',
+    download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1a2.tar.gz',
     entry_points = {
         'console_scripts': [
             'diyr = diyr.main:main'
