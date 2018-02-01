@@ -10,12 +10,12 @@ def read(fname):
 
 setup(
     name = "diyr",
-    version = "0.0.1a1",
+    version = "0.0.1a2",
     author = "Miguel Alex Cantu",
     author_email = "miguel.can2@gmail.com	",
     description = ("An interactive program that hollows out text files"
                    "with verses, references, and ministry excerpts."),
-    license = "BSD",
+    license = "GNU General Public License v3 or later (GPLv3+)",
     keywords = "Study Bible, Memorize Bible",
     packages=[
         'diyr',
