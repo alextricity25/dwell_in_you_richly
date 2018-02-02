@@ -13,7 +13,7 @@ import argparse
 import os
 
 example_file_path  = (os.path.dirname(os.path.realpath(__file__)) +
-"/../example_format_types/listed_verses.txt")
+"//example_format_types/listed_verses.txt")
 
 parser = argparse.ArgumentParser(
     usage = '%(prog)s',
