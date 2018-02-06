@@ -12,11 +12,12 @@ import random
 
 class FillInTheBlank(BaseEngineClass):
 
-    def __init__(self, formatter):
-        BaseEngineClass.__init__(self, formatter)
-        # This is hardcoded for now, but evntually
-        # this needs to be made configurable
-        self.n_replace_words = 2
+    def __init__(self, formatter, **kwargs):
+        # kwargs desc:
+        #    level = [0-9]+: How many words
+        #    in the line to replace
+        BaseEngineClass.__init__(self, formatter, **kwargs)
+        self.n_replace_words = kwargs.get('level', 2)
 
     # run_engine processes the data on a per-line basis
     def run_engine(self):

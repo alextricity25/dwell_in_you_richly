@@ -12,7 +12,7 @@ from diyr.formattypes.base import BaseFormatClass
 
 class BaseEngineClass():
 
-    def __init__(self, formatter):
+    def __init__(self, formatter, **kwargs):
 
         if not isinstance(formatter, BaseFormatClass):
              raise Exception('Engine class must be initialized with a formatter!')

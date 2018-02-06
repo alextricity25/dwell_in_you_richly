@@ -53,5 +53,14 @@ parser.add_argument(
     required = False
 )
 
+parser.add_argument(
+    '-l',
+    '--level',
+    help = "The level of difficulty",
+    required = False,
+    type = int,
+    default = 2
+)
+
 def get_parser():
     return parser

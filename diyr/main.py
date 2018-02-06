@@ -46,7 +46,7 @@ def main():
                                  fromlist = ['blah'])
         engine_class = getattr(engine_module,
                                ENGINE_MAPPER[parsed_args.mode])
-        engine = engine_class(formatter)
+        engine = engine_class(formatter, level = parsed_args.level)
         #engine.run_engine()
         runner = CommandLineRunner(engine)
         runner.run()
