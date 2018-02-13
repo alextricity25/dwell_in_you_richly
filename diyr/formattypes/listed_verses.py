@@ -16,7 +16,7 @@ class ListedVerses(BaseFormatClass):
     def __init__(self, stream):
     
         # Grammers defined here
-        self.verse_word = Word( alphas + '.,?;')
+        self.verse_word = Word( alphas + '.,?;!\'')
         self.verse = OneOrMore(self.verse_word)
         # The verses for this formatter are listed numerically
         # The identifier this formatter will use the number.
