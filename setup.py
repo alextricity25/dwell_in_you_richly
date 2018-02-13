@@ -20,9 +20,11 @@ setup(
     packages=[
         'diyr',
         'diyr.formattypes',
-        'diyr.engines'
+        'diyr.engines',
+        'diyr.sources',
+        'diyr.utils',
     ],
-    install_requires = ['pyparsing'],
+    install_requires = ['pyparsing', 'beautifulsoup4', 'requests'],
     package_data = {
         'diyr': ['example_format_types/listed_verses.txt']
     },

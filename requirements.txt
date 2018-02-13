@@ -1,1 +1,3 @@
 pyparsing
+beautifulsoup4
+requests
