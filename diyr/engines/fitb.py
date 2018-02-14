@@ -26,19 +26,37 @@ class FillInTheBlank(BaseEngineClass):
         # underscores. The engine randomly selects words to
         # replace.
         for line in self.formatter.get_result():
-            #print line['body'].join(' ')
+            # Number of possible worlds in this line that can
+            # can be replaced.
+            # NOTE(alextricity25) For now, the possible number
+            # of words the engine can replace will be the number
+            # of all the words in a sentence. This will change
+            # once we add the ability to exclude certain words.
+            possible_rep_words = len(line['body'])
+            # We want to preserve the line witout the replacements,
+            # so we use a new list for the modified line
             new_line = list(line['body'])
             # Subtract one because lists are indexed starting
             # from zero
             upper_l = len(line['body']) - 1
             replaced_indicies = []
-            for i in xrange(self.n_replace_words):
+            # If the number of user-defined words to replace is greater
+            # than the number of possible words to replace,
+            # then just replace all of the words possible.
+            if self.n_replace_words > possible_rep_words:
+                words_to_replace = possible_rep_words
+            else:
+                words_to_replace = self.n_replace_words
+            for i in xrange(words_to_replace):
                 # Generate random index
                 random_index = random.randint(0, upper_l)
                 # This condition is put in place so the same
                 # word is not replaced twice
                 # If the index has already been replaced,
-                # then generate a new one.
+                # then generate a new one. We keep doing
+                # this until either the number of possible
+                # words to replace is exceeded, or
+                # n_replace_word is exceeded.
                 while random_index in replaced_indicies:
                     random_index = random.randint(0, upper_l)
                 
@@ -51,4 +69,5 @@ class FillInTheBlank(BaseEngineClass):
             # original.
             line['body'] = (line['body'], new_line)
 
+            # Send the processed line to the caller
             yield line
