@@ -18,21 +18,32 @@ import re
 
 class OnlineSourceClass(BaseSourceClass):
 
-    def __init__(self, url = ""):
+    def __init__(self, url = "", book = "", chapter = ""):
         self.BIBLE = Bible().BIBLE
+        self.book = book
+        self.chapter = chapter
         BaseSourceClass.__init__(self, source = url)
 
     def get_stream(self):
         retries = 0
         status_code = 0
         while status_code != 200 and retries < 5:
-            # Randomize the book
-            # Take note of the one-off number due to indicies starting at zero
-            book_number = random.randint(1, len(self.BIBLE.keys()))
-            book_name = list(self.BIBLE.keys())[book_number]
-            chapter_number = random.randint(1, int(self.BIBLE[book_name]['chapters']))
+
+            # If book and chapter are given, then simply set the
+            # ``book_name`` and ``chapter_number`` variables to
+            # what was given, else, randomize them.
+            if self.book and self.chapter:
+                book_number = self._get_book_num(self.book)
+                book_name = self.book
+                chapter_number = self.chapter
+            else:
+                # Randomize the book
+                book_number = random.randint(1, len(self.BIBLE.keys()))
+                book_name = list(self.BIBLE.keys())[book_number]
+                chapter_number = random.randint(1, int(self.BIBLE[book_name]['chapters']))
             # This is the URL that online.recoveryversion
             # uses for the text based version of the Bible.
+            # Take note of the one-off number due to indicies starting at zero
             url = "{}/{}_{}{}.htm".format(
                       self.source,
                       book_number + 1,
@@ -69,10 +80,22 @@ class OnlineSourceClass(BaseSourceClass):
                                 str(verse_num) + ".",
                                 verse))
                 verse_num += 1
-        print "The book {} chapter {} was chosen for you!".format(
+        print "The book {} chapter {} will be used".format(
             book_name,
             chapter_number)
+
+        # If max retires was hit, throw an error
+        if retries >= 5:
+            print "The maximum amount of retires has been exceeded!"
+            print "Could not successfully locate url:"
+            print url
+            exit()
         return verses_list
 
     def _remove_non_ascii(self, text):
         return ''.join(i for i in text if ord(i)<128)
+
+    def _get_book_num(self, book):
+        # Adding one because lists are indexed starting
+        # with zero.
+        return self.BIBLE.keys().index(book)

@@ -37,7 +37,9 @@ def main():
     else:
         from diyr.sources.online import OnlineSourceClass
         source_class = OnlineSourceClass(
-            "http://online.recoveryversion.bible/txo"
+            "http://online.recoveryversion.bible/txo",
+            book = parsed_args.book,
+            chapter = parsed_args.chapter
         )
 
     stream_object = source_class.get_stream()

@@ -58,5 +58,19 @@ parser.add_argument(
     default = 2
 )
 
+parser.add_argument(
+    '--book',
+    '-b',
+    required = False,
+    default = ""
+)
+
+parser.add_argument(
+    '--chapter',
+    '-c',
+    required = False,
+    default = ""
+)
+
 def get_parser():
     return parser
