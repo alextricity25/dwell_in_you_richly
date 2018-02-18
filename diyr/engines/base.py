@@ -8,12 +8,14 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+import logging
+
 from diyr.formattypes.base import BaseFormatClass
 
 class BaseEngineClass():
 
     def __init__(self, formatter, **kwargs):
-
+        logging.debug("Initializing BaseEngineClass")
         if not isinstance(formatter, BaseFormatClass):
              raise Exception('Engine class must be initialized with a formatter!')
         self.formatter = formatter

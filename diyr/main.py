@@ -9,6 +9,8 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+import logging
+import os
 from diyr import args
 from diyr.command_line import CommandLineRunner
 # MAPS COMMAND LINE TYPES TO FORMATTERS
@@ -25,6 +27,13 @@ ENGINE_MAPPER = {
 
 def main():
     parsed_args = args.get_parser().parse_args()
+
+    # Setting up logging
+    log_file = os.path.expanduser("~/diyr.log")
+    numeric_level = getattr(logging, parsed_args.loglevel.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError('Invalid log Level: {}'.format(parsed_args.loglevel))
+    logging.basicConfig(filename = log_file, level = numeric_level)
 
     # If file argument is used, then use the FileSourceClass source plugin
     if parsed_args.file:
@@ -55,7 +64,6 @@ def main():
     formatter = format_class(stream_object)
     # Now we pass the formatter to whatever
     # Engine we want to use
-    # testing
     # Import the respective engine
     engine_module = __import__('diyr.engines.{}'.format(
                              parsed_args.mode),

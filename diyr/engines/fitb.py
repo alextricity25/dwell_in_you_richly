@@ -7,8 +7,10 @@
 # details (see GNU General Public License).
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
-from diyr.engines.base import BaseEngineClass
 import random
+import logging
+
+from diyr.engines.base import BaseEngineClass
 
 class FillInTheBlank(BaseEngineClass):
 
@@ -17,7 +19,11 @@ class FillInTheBlank(BaseEngineClass):
         #    level = [0-9]+: How many words
         #    in the line to replace
         BaseEngineClass.__init__(self, formatter, **kwargs)
+        logging.debug("Initializing FillInTheBlank...")
         self.n_replace_words = kwargs.get('level', 2)
+        logging.debug(("This engine will attempt to replace " +
+                       "{} words with underscores".format(
+                           self.n_replace_words)))
 
     # run_engine processes the data on a per-line basis
     def run_engine(self):
@@ -33,9 +39,13 @@ class FillInTheBlank(BaseEngineClass):
             # of all the words in a sentence. This will change
             # once we add the ability to exclude certain words.
             possible_rep_words = len(line['body'])
+            logging.debug(("Number of words that can be possibly " +
+                           "replaced: {}".format(possible_rep_words)))
             # We want to preserve the line witout the replacements,
             # so we use a new list for the modified line
             new_line = list(line['body'])
+            logging.debug("The line that is being processed: {}".format(
+                new_line))
             # Subtract one because lists are indexed starting
             # from zero
             upper_l = len(line['body']) - 1
@@ -47,6 +57,9 @@ class FillInTheBlank(BaseEngineClass):
                 words_to_replace = possible_rep_words
             else:
                 words_to_replace = self.n_replace_words
+            logging.debug(("The number of words that are going to be " +
+                           "actually replaced are: {}".format(
+                               words_to_replace)))
             for i in xrange(words_to_replace):
                 # Generate random index
                 random_index = random.randint(0, upper_l)
@@ -57,10 +70,16 @@ class FillInTheBlank(BaseEngineClass):
                 # this until either the number of possible
                 # words to replace is exceeded, or
                 # n_replace_word is exceeded.
+                logging.debug("Attempting to replace the word: {}".format(
+                    new_line[random_index]))
                 while random_index in replaced_indicies:
+                    logging.debug(("This word has already been replaced. " +
+                                   "Randomizing again..."))
                     random_index = random.randint(0, upper_l)
                 
                 replaced_indicies.append(random_index)
+                logging.debug("The word that is being replaced is: {}".format(
+                    new_line[random_index]))
                 new_line[random_index] = (
                     "_" * len(line['body'][random_index]))
             # This engine modifies the dataset from the
@@ -68,6 +87,7 @@ class FillInTheBlank(BaseEngineClass):
             # tuple of the hollowed out line, and the
             # original.
             line['body'] = (line['body'], new_line)
+            logging.debug("The replaced word is {}".format(line['body']))
 
             # Send the processed line to the caller
             yield line

@@ -8,6 +8,8 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+import logging
+
 from pyparsing import Word, alphas, OneOrMore, nums, Group, Suppress, Optional
 from diyr.formattypes.base import BaseFormatClass
 
@@ -16,6 +18,7 @@ class ReferencedVerses(BaseFormatClass):
     def __init__(self, stream):
     
         BaseFormatClass.__init__(self, stream)
+        logging.debug("Initializing ReferencedVerses...")
         # Grammers defined here
         #NOTE: self.verse_word is defined in the base class
         #NOTE: self.verse is defined in the base class
@@ -35,11 +38,16 @@ class ReferencedVerses(BaseFormatClass):
     def get_result(self):
         # Reading input stream line by line
         for line in self.stream:
+            logging.debug("Parsing line: {}".format(line))
             parsed_line = self.verse_reference.parseString(line)
             self.result['body'] = parsed_line[0]
+            logging.debug("Body for this line is: {}".format(
+                self.result['body']))
             # The identifier for each line when this file format is used
             # is the verse reference
             self.result['identifier'] = parsed_line[1]
+            logging.debug("Identifier for this line is {}".format(
+                self.result['identifier']))
             # There are no extras for this formatter
             self.result['extras'] = None
             yield self.result

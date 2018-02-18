@@ -7,6 +7,7 @@
 # details (see GNU General Public License).
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
+import logging
 
 class CommandLineRunner():
 
@@ -19,8 +20,11 @@ class CommandLineRunner():
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
             identifier = ''.join(line['identifier'])
+            expected_input = verse.lower().strip()
             print "{} {}".format(identifier, hollowed_verse)
+            logging.debug("Expecting user input: {}".format(expected_input))
             user_input = raw_input()
+            
             if user_input.lower().strip() == verse.lower().strip():
                 print "Amen!"
             else:

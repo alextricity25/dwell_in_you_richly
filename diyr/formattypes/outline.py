@@ -7,15 +7,16 @@
 # details (see GNU General Public License).
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
+import logging
 
 from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional, ZeroOrMore
 from diyr.formattypes.base import BaseFormatClass
-import pdb
 
 class Outline(BaseFormatClass):
 
     def __init__(self, stream):
         BaseFormatClass.__init__(self, stream)
+        logging.debug("Initializing Outline...")
         # Grammers defined here
         self.roman_letters = "IVX"
         self.roman_letters_small = 'ivx'
@@ -46,12 +47,19 @@ class Outline(BaseFormatClass):
 
     def get_result(self):
         for line in self.stream:
+            logging.debug("Parsing line {}".format(line))
             parsed_line = self.line_grammer.parseString(line)
             #pdb.set_trace()
             self.result['body'] = parsed_line[1]
+            logging.debug("Body for this line is: {}".format(
+                self.result['body']))
             # The identifier for each line when this file format is
             # used is the point identifier
             self.result['identifier'] = parsed_line[0]
+            logging.debug("Identifier for this line is {}".format(
+                self.result['identifier']))
             self.result['extras'] = {
                 'verse_references': parsed_line[-1] }
+            logging.debug("Extras for this line are: {}".format(
+                self.result['extras']))
             yield self.result

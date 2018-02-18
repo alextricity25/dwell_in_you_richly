@@ -8,11 +8,13 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+import logging
 from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional
 
 class BaseFormatClass():
 
     def __init__(self, stream):
+        logging.debug("Initializing BaseFormatClass...")
         self.stream = stream
 
         # For each line of the input stream,
@@ -34,6 +36,8 @@ class BaseFormatClass():
         bible_grammer_chars = '.,?;!\'/'
         self.verse_word = Word(alphas + bible_grammer_chars)
         self.verse = OneOrMore(self.verse_word)
+
+        logging.debug("Stream line is: {}".format(self.stream))
 
     # This function should return a generator yielding
     # the proper grammers formed by the respective format

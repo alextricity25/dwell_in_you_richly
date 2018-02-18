@@ -72,5 +72,19 @@ parser.add_argument(
     default = ""
 )
 
+parser.add_argument(
+    '--loglevel',
+    '-v',
+    default = "WARNING",
+    choices = [
+        'DEBUG',
+        'INFO',
+        'WARNING',
+        'ERROR',
+        'CRITICAL'
+    ],
+    required = False
+)
+
 def get_parser():
     return parser

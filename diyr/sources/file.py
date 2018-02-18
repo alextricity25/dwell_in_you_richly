@@ -8,14 +8,17 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+import logging
 from diyr.sources.base import BaseSourceClass
 
 class FileSourceClass(BaseSourceClass):
 
     def __init__(self, file_path=""):
+        logging.debug("Initializing FileSourceClass...")
         BaseSourceClass.__init__(self, source = file_path)
         # self.source should now be avialable to this instance
         # and containing the file path of the file to be read
 
     def get_stream(self):
+        logging.debug("Reading from file: {}".format(self.source))
         return open(self.source, 'r')

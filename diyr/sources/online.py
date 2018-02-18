@@ -15,19 +15,26 @@ from diyr.utils.bible import Bible
 import requests
 import random
 import re
+import logging
 
 class OnlineSourceClass(BaseSourceClass):
 
     def __init__(self, url = "", book = "", chapter = ""):
+        logging.debug("Initializing OnlineSourceClass...")
         self.BIBLE = Bible().BIBLE
         self.book = book
         self.chapter = chapter
         BaseSourceClass.__init__(self, source = url)
+        logging.debug("Pulling {} {} from {}".format(
+            book,
+            chapter,
+            self.source))
 
     def get_stream(self):
         retries = 0
         status_code = 0
         while status_code != 200 and retries < 5:
+            logging.debug("Number of retries: {}".format(retries))
 
             # If book and chapter are given, then simply set the
             # ``book_name`` and ``chapter_number`` variables to
@@ -52,14 +59,17 @@ class OnlineSourceClass(BaseSourceClass):
                       # i.e. "1 Corinthians"
                       book_name.replace(" ", ""),
                       chapter_number)
+            logging.info("Sending request to {}".format(url))
             r = requests.get(url)
             status_code = r.status_code
+            logging.debug("Status code for this attempt: {}".format(status_code))
 
             # If status_code is not 201, there is no
             # need to continue with this iteration.
             # Instead, we are going to randomize the
             # bible again and retry the request.
             if status_code != 200:
+                logging.info("Status code does not equal 200, retrying...")
                 retries += 1
                 continue
 
@@ -86,10 +96,9 @@ class OnlineSourceClass(BaseSourceClass):
 
         # If max retires was hit, throw an error
         if retries >= 5:
-            print "The maximum amount of retires has been exceeded!"
-            print "Could not successfully locate url:"
-            print url
-            exit()
+            logging.warn("The maximum amount of retires has been exceeded!")
+            logging.warn("Could not successfully locate url {}".format(url))
+            raise Exception("Cloud not find bible at: {}:".format(url))
         return verses_list
 
     def _remove_non_ascii(self, text):
