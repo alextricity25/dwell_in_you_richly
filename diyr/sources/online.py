@@ -89,7 +89,7 @@ class OnlineSourceClass(BaseSourceClass):
                          re.sub(r'[0-9]+:[0-9]+',
                                 str(verse_num) + ".",
                                 verse))
-                verse_num += 1
+                    verse_num += 1
         print "The book {} chapter {} will be used".format(
             book_name,
             chapter_number)
