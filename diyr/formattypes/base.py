@@ -8,6 +8,7 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 
+from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional
 
 class BaseFormatClass():
 
@@ -25,6 +26,14 @@ class BaseFormatClass():
             "identifier": str,
             "extras": dict
         }
+
+        # These are some common pyparsing objects that
+        # the formatter drivers can use.
+        # Each word in a verse can be composed of any letter
+        # in the english alphabet, plus grammer characters.
+        bible_grammer_chars = '.,?;!\'/'
+        self.verse_word = Word(alphas + bible_grammer_chars)
+        self.verse = OneOrMore(self.verse_word)
 
     # This function should return a generator yielding
     # the proper grammers formed by the respective format

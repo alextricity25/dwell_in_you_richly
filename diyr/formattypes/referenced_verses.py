@@ -15,10 +15,10 @@ class ReferencedVerses(BaseFormatClass):
 
     def __init__(self, stream):
     
+        BaseFormatClass.__init__(self, stream)
         # Grammers defined here
-        self.verse_word = Word( alphas + '.,')
-        self.verse = OneOrMore(self.verse_word)
-        #self.reference = Word( alphas ) + Word( nums ) + ':' + Word( nums )
+        #NOTE: self.verse_word is defined in the base class
+        #NOTE: self.verse is defined in the base class
         self.book_num = Optional(Word(nums, exact = 1))
         self.book_name = Word(alphas)
         self.book_chapter = Word(nums)
@@ -29,7 +29,6 @@ class ReferencedVerses(BaseFormatClass):
         # This is the dataset we will mainly be operating on, since
         # it will contain the verse and the reference seperated out
         self.verse_reference = Group(self.verse) + Suppress('-') + Group(self.reference)
-        BaseFormatClass.__init__(self, stream)
 
 
     # Must return a dataset with these 

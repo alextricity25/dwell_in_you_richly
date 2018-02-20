@@ -15,16 +15,16 @@ class ListedVerses(BaseFormatClass):
 
     def __init__(self, stream):
     
+        BaseFormatClass.__init__(self, stream)
+        # NOTE: self.verse_word is defined in the base class
+        # NOTE: self.verse is defined in the base class
         # Grammers defined here
-        self.verse_word = Word( alphas + '.,?;!\'/')
-        self.verse = OneOrMore(self.verse_word)
         # The verses for this formatter are listed numerically
         # The identifier this formatter will use the number.
         self.number = Word(nums + ".")
         # This is the dataset we will mainly be operating on, since
         # it will contain the verse and the identifier
         self.verse_reference = Group(self.number) + Group(self.verse)
-        BaseFormatClass.__init__(self, stream)
 
 
     # Must return a dataset with these 
