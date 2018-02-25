@@ -39,7 +39,7 @@ class Outline(BaseFormatClass):
         self.verses = self.abbriv + self.verse_list
         
         # Grammer to match the line on an outline
-        self.line_grammer = Group(Optional(Group(self.point_identifier))) + \
+        self.line_grammer = Group(Optional(self.point_identifier)) + \
                             Group(self.verse) + \
                             Optional("-") + \
                             Group(ZeroOrMore(self.verses))

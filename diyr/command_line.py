@@ -18,7 +18,8 @@ class CommandLineRunner():
         for line in self.engine.run_engine():
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
-            print hollowed_verse
+            identifier = ''.join(line['identifier'])
+            print "{} {}".format(identifier, hollowed_verse)
             user_input = raw_input()
             if user_input.lower().strip() == verse.lower().strip():
                 print "Amen!"
