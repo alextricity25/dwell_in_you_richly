@@ -19,13 +19,21 @@ class CommandLineRunner():
         for line in self.engine.run_engine():
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
-            identifier = ''.join(line['identifier'])
-            expected_input = verse.lower().strip()
-            print "{} {}".format(identifier, hollowed_verse)
+            identifier = line['identifier']
+            if line['extras'].get("identifier_position", '') == 'after':
+                expected_input = "{} {}".format(
+                    verse,
+                    identifier).lower().strip()
+                print "{} {}".format(hollowed_verse, identifier)
+            else:
+                expected_input = "{} {}".format(
+                    identifier,
+                    verse).lower().strip()
+                print "{} {}".format(identifier, hollowed_verse)
             logging.debug("Expecting user input: {}".format(expected_input))
             user_input = raw_input()
             
-            if user_input.lower().strip() == verse.lower().strip():
+            if user_input.lower().strip() == expected_input:
                 print "Amen!"
             else:
                 print "Incorrect."

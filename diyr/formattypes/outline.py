@@ -55,7 +55,7 @@ class Outline(BaseFormatClass):
                 self.result['body']))
             # The identifier for each line when this file format is
             # used is the point identifier
-            self.result['identifier'] = parsed_line[0]
+            self.result['identifier'] = ''.join(parsed_line[0])
             logging.debug("Identifier for this line is {}".format(
                 self.result['identifier']))
             self.result['extras'] = {

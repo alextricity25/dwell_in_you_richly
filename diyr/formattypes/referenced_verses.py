@@ -28,7 +28,7 @@ class ReferencedVerses(BaseFormatClass):
         self.book_verse = Word(nums) 
         self.reference = (self.book_num +
                           self.book_name +
-                          self.book_chapter + ":" + self.book_verse)
+                          Group(self.book_chapter + ":" + self.book_verse))
         # This is the dataset we will mainly be operating on, since
         # it will contain the verse and the reference seperated out
         self.verse_reference = Group(self.verse) + Suppress('-') + Group(self.reference)
@@ -45,9 +45,16 @@ class ReferencedVerses(BaseFormatClass):
                 self.result['body']))
             # The identifier for each line when this file format is used
             # is the verse reference
-            self.result['identifier'] = parsed_line[1]
+            #self.result['identifier'] = parsed_line[1]
+            self.result['identifier'] = "{} {}".format(
+                ' '.join(parsed_line[1][:-1]), 
+                ''.join(parsed_line[1][-1]))
             logging.debug("Identifier for this line is {}".format(
                 self.result['identifier']))
-            # There are no extras for this formatter
-            self.result['extras'] = None
+            # The extra attribute 'identifier_position' is so that the
+            # consumer has a way of knowing if the identifer should
+            # go before the line starts, or after the line starts.
+            self.result['extras'] = {
+                'identifier_position': 'after'
+            }
             yield self.result
