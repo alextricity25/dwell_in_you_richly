@@ -15,19 +15,26 @@ Usage
 To have diyr pull a random book and chapter from the internet simply type:
 
 .. code-block:: shell
+
    diyr
 
 To have diyr process an outline that's on disk, use:
+
 .. code-block:: shell
+
    diyr -t outline -f <file_path_to_outline_text_file>
 
 To change how many words diyr replaces, use the `-l` flag:
+
 .. code-block:: shell
+
    diyr -l 9
 
 Example Output
 ##############
+
 .. code-block::
+
    I. ___ _______ __ ___ ________
    I. The purose of the training.
    Incorrect.
