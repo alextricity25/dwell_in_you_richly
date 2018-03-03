@@ -45,5 +45,5 @@ class ListedVerses(BaseFormatClass):
             logging.debug("Identifier for this line is {}".format(
                 self.result['identifier']))
             # There are no extras for this formatter
-            self.result['extras'] = None
+            self.result['extras'] = {}
             yield self.result
