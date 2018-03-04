@@ -71,7 +71,7 @@ def main():
     engine_class = getattr(engine_module,
                            ENGINE_MAPPER[parsed_args.mode])
     engine = engine_class(formatter, level = parsed_args.level)
-    runner = CommandLineRunner(engine)
+    runner = CommandLineRunner(engine, parsed_args)
     runner.run()
  
 

@@ -11,7 +11,8 @@ import logging
 
 class CommandLineRunner():
 
-    def __init__(self, engine):
+    def __init__(self, engine, parsed_args):
+        self.parsed_args = parsed_args
         self.engine = engine
 
 
@@ -26,14 +27,23 @@ class CommandLineRunner():
                     identifier).lower().strip()
                 print "{} {}".format(hollowed_verse, identifier)
             else:
-                expected_input = "{} {}".format(
+                expected_input = "{}{}".format(
                     identifier,
                     verse).lower().strip()
-                print "{} {}".format(identifier, hollowed_verse)
+                print "{}{}".format(identifier, hollowed_verse)
             logging.debug("Expecting user input: {}".format(expected_input))
             user_input = raw_input()
-            
             if user_input.lower().strip() == expected_input:
                 print "Amen!"
             else:
                 print "Incorrect."
+
+            if line['extras'].get('verse_references', '') and self.parsed_args.test_references:
+                verses = ''.join(line['extras']['verse_references']).split(';')
+                for verse in verses:
+                    print "Type the verse references verbatim:"
+                    user_input_verse = raw_input()
+                    if user_input_verse.lower().strip() == verse.lower().strip():
+                        print "Amen!"
+                    else:
+                        print "Wrong. The verse reference is: {}".format(verse)

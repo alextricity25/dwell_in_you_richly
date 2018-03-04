@@ -73,6 +73,13 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    '--test-references',
+    '-r',
+    action = 'store_true',
+    required = False
+)
+
+parser.add_argument(
     '--loglevel',
     '-v',
     default = "WARNING",
