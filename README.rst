@@ -45,3 +45,33 @@ Example Output
    B. To equip the trainees in the realization of the divine truths according to the Scriptures by the revelation of the Holy Spirit
    Amen!
    C. To raise up the trainees in the cultivation __ _____ spiritual capacity in the _________ of the gospel, the nourishing of the young believers, the perfecting of the saints, and the ___________ __ the word of God for ________ up of the local churches, consummating in the building up of ___ Body of Christ
+
+Example with a file containing verses with their corresponding verse refrences:
+
+.. code-block::
+
+   diyr -t referenced_verses -f example_format_types/verse_references.txt -l 8
+   _____ __ now then __ condemnation __ those who ___ __ ______ ______ Romans 8:1
+   There is now then no condemnation to those who are in Christ Jesus. Romans 8:1
+   Amen!
+   For __ know that all ______ work together ___ ____ to those ___ love God, __ those who are called according __ ___ purpose, Romans 8:28
+   For we know that all things work together for good to those who love God, to those who are called according to His purpose, Romans 8:28
+   Amen!
+   As it is ________ ___ first ____ ______ _ living soul, the ____ Adam became a ____ giving ______ 1 Corinthians 15:45
+
+Example output when using diyr when specifiying a book and chapter:
+
+.. code-block::
+
+   diyr --book "Romans" --chapter 8 -l 9
+   The book Romans chapter 8 will be used
+   1. _____ __ ___ then __ ____________ to those ___ ___ __ ______ Jesus.
+   1. There is now then no condemnation to those who are in Christ Jesus.
+   Amen!
+   2. ___ ___ law __ ___ Spirit __ ____ has freed me in Christ _____ from the law of ___ and __ death.
+   2. For the law of the Spirit of life has freed me in Christ Jesus from the law of sin and of death.
+   Amen!
+   3. For that which the law could not ___ __ that __ was weak _______ the ______ ____ sending His ___ Son in the likeness of the flesh of sin ___ concerning sin, _________ sin in the flesh,
+   3. For that which the law could not do, in that it was weak through the flesh, God, sending His own Son in the likeness of the flesh of sin but concerning sin, condemned sin in the flesh,
+   Incorrect.
+   4. That ___ _________ requirement of ___ ___ might __ _________ in us, who do ___ walk _________ __ the flesh but according to the spirit.
