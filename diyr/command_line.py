@@ -8,6 +8,8 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 import logging
+import difflib
+import sys
 
 class CommandLineRunner():
 
@@ -36,7 +38,12 @@ class CommandLineRunner():
             if user_input.lower().strip() == expected_input:
                 print "Amen!"
             else:
-                print "Incorrect."
+                d = difflib.Differ()
+                result = list(d.compare(
+                    [user_input.lower() + '\n'],
+                    [expected_input + '\n']))
+                print "Incorrect. Delta show below:"
+                sys.stdout.writelines(result)
 
             if line['extras'].get('verse_references', '') and self.parsed_args.test_references:
                 verses = ''.join(line['extras']['verse_references']).split(';')
