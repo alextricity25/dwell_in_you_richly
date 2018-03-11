@@ -50,7 +50,8 @@ class CommandLineRunner():
                 for verse in verses:
                     print "Type the verse references verbatim:"
                     user_input_verse = raw_input()
-                    if user_input_verse.lower().strip() == verse.lower().strip():
+                    if (user_input_verse.lower().strip().replace(' ','') ==
+                        verse.lower().strip().replace(' ', '')):
                         print "Amen!"
                     else:
                         print "Wrong. The verse reference is: {}".format(verse)
