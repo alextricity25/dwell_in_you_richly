@@ -35,17 +35,31 @@ Example Output
 
 .. code-block::
 
-   I. ___ _______ __ ___ ________
-   I. The purose of the training.
-   Incorrect.
-   A. __ _____ up the trainees in Christ in ___ growth __ ___ life ____ ________
-   A. To build up the trainees in Christ in the growth of His life unto maturity
+   diyr -f ~/Documents/MysteryOfHumanLife/key_one.txt -t outline -l 8 -r
+   _________ ___ _______ __ _____ _________
+   UNLOCKING THE MYSTERY OF HUMAN EXISTENCE
    Amen!
-   B. To equip the trainees in the ___________ __ the ______ ______ according to the Scriptures __ ___ revelation of ___ Holy Spirit
-   B. To equip the trainees in the realization of the divine truths according to the Scriptures by the revelation of the Holy Spirit
+   _____ ________
+   GOD'S CREATION
    Amen!
-   C. To raise up the trainees in the cultivation __ _____ spiritual capacity in the _________ of the gospel, the nourishing of the young believers, the perfecting of the saints, and the ___________ __ the word of God for ________ up of the local churches, consummating in the building up of ___ Body of Christ
+   1.___ ___ _____ _____
+   1.MAN HAS GOD'S IMAGE
+   Amen!
+   ___ God said, ___ Us make ___ in ___ ______ _________ __ ___ likeness.
+   And God said, Let Us make man in our image, according to our likeness.
+   Amen!
+   Type the verse references verbatim:
+   Genesis 1:26
+   Amen!
+   _____ ________ __ man is _________ ____ His ________ __ all _____ things.
+   God's creaatin of man is different then His creation of all things. 
+   Incorrect. Delta show below:
+   - god's creaatin of man is different then his creation of all things.
+   ?           -                        ^^^^
+   + god's creation of man is different from his creation of all other things.
+   ?             +                      ^^^^                     ++++++
 
+Delta's will be printed when a line is inputted incorrectly.
 Example with a file containing verses with their corresponding verse refrences:
 
 .. code-block::
@@ -63,15 +77,19 @@ Example output when using diyr when specifiying a book and chapter:
 
 .. code-block::
 
-   diyr --book "Romans" --chapter 8 -l 9
+   diyr --book Romans --chapter 8 -l 8
    The book Romans chapter 8 will be used
-   1. _____ __ ___ then __ ____________ to those ___ ___ __ ______ Jesus.
-   1. There is now then no condemnation to those who are in Christ Jesus.
+   1._____ __ now ____ __ ____________ to _____ who are __ ______ Jesus.
+   1.There is now then no condemnation to those who are in Christ Jesus.
    Amen!
-   2. ___ ___ law __ ___ Spirit __ ____ has freed me in Christ _____ from the law of ___ and __ death.
-   2. For the law of the Spirit of life has freed me in Christ Jesus from the law of sin and of death.
+   2.For the ___ of the Spirit of ____ has _____ me __ Christ Jesus from ___ law of sin ___ __ ______
+   2.For the law of the Spirit of life has freed me in Christ Jesus from the law of sin and of death.
    Amen!
-   3. For that which the law could not ___ __ that __ was weak _______ the ______ ____ sending His ___ Son in the likeness of the flesh of sin ___ concerning sin, _________ sin in the flesh,
-   3. For that which the law could not do, in that it was weak through the flesh, God, sending His own Son in the likeness of the flesh of sin but concerning sin, condemned sin in the flesh,
-   Incorrect.
-   4. That ___ _________ requirement of ___ ___ might __ _________ in us, who do ___ walk _________ __ the flesh but according to the spirit.
+   3.For that _____ ___ law could not do, in that __ was ____ through the flesh, God, sending His own Son in the ________ of ___ flesh of ___ ___ concerning sin, condemned sin in the flesh,
+   3.For that which the law could not do, in that it was weak through the flesh, God, sending His own Son in the likeness of the flesh of sin, and concerning sin, conmnedd sin in the flesh,
+   Incorrect. Delta show below:
+   - 3.for that which the law could not do, in that it was weak through the flesh, god, sending his own son in the likeness of the flesh of sin, and concerning sin, conmnedd sin in the flesh,
+   ?                                                                                                                                           -                           -
+   + 3.for that which the law could not do, in that it was weak through the flesh, god, sending his own son in the likeness of the flesh of sin and concerning sin, condemned sin in the flesh,
+   ?                                                                                                                                                                   ++
+   
