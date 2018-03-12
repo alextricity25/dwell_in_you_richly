@@ -83,7 +83,7 @@ class Bible():
         self.BIBLE['Revelation'] = {'chapters': 22, 'abbriv': 'Rev.'}
 
     def extrapolate_abbriv(self, verse, raise_exp = True):
-        reg = re.compile('(([0-9]*) *[\D]+) *([0-9:]*)')
+        reg = re.compile('(([0-9]*) *[\D]+) *([-0-9:,]*)')
         m = reg.match(verse)
         book_name_abbriv = m.group(1).strip()
         for book, prop in self.BIBLE.iteritems():
