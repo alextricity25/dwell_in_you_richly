@@ -10,12 +10,16 @@
 import logging
 import difflib
 import sys
+import pdb
+
+from diyr.utils.bible import Bible
 
 class CommandLineRunner():
 
     def __init__(self, engine, parsed_args):
         self.parsed_args = parsed_args
         self.engine = engine
+        self.bible = Bible()
 
 
     def run(self):
@@ -48,10 +52,23 @@ class CommandLineRunner():
             if line['extras'].get('verse_references', '') and self.parsed_args.test_references:
                 verses = ''.join(line['extras']['verse_references']).split(';')
                 for verse in verses:
+                    logging.debug("The raw verse from the engine is: {}".format(
+                        verse))
                     print "Type the verse references verbatim:"
                     user_input_verse = raw_input()
-                    if (user_input_verse.lower().strip().replace(' ','') ==
-                        verse.lower().strip().replace(' ', '')):
+                    # Expected verse input
+                    expected_verse_input = self.bible.extrapolate_abbriv(
+                        verse,
+                        raise_exp = False).lower().strip().replace(' ', '')
+                    # Transformed user input.
+                    trans_user_input = self.bible.extrapolate_abbriv(
+                        user_input_verse,
+                        raise_exp = False).lower().strip().replace(' ', '')
+                    logging.debug("expected verse input: {}".format(
+                        expected_verse_input))
+                    logging.debug("transformed user input: {}".format(
+                        trans_user_input))
+                    if expected_verse_input == trans_user_input:
                         print "Amen!"
                     else:
                         print "Wrong. The verse reference is: {}".format(verse)
