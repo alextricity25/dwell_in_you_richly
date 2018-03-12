@@ -28,10 +28,10 @@ class CommandLineRunner():
             verse = ' '.join(line['body'][0])
             identifier = line['identifier']
             if line['extras'].get("identifier_position", '') == 'after':
-                expected_input = "{} {}".format(
+                expected_input = "{} - {}".format(
                     verse,
                     identifier).lower().strip()
-                print "{} {}".format(hollowed_verse, identifier)
+                print "{} - {}".format(hollowed_verse, identifier)
             else:
                 expected_input = "{}{}".format(
                     identifier,
@@ -56,6 +56,10 @@ class CommandLineRunner():
                         verse))
                     print "Type the verse references verbatim:"
                     user_input_verse = raw_input()
+                    ## The code below is logic written to handle different input
+                    ## format from the user when inputting a verse reference.
+                    ## The user can input a verse reference in it's abbrivated or
+                    ## it's full form.
                     # Expected verse input
                     expected_verse_input = self.bible.extrapolate_abbriv(
                         verse,
