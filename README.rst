@@ -30,6 +30,27 @@ To change how many words diyr replaces, use the `-l` flag:
 
    diyr -l 9
 
+
+Quick Start for fill-in-the-blank verse references
+##################################################
+
+.. code-block:: shell
+
+   # Install the application
+   $ pip install diyr
+   # Create a file with a bunch of verse references. For example:
+   $ cat ~/verse_references.txt
+   There is now then no condemnation to those who are in Christ Jesus. - Romans 8:1
+   For we know that all things work together for good to those who love God, to those who are called according to His purpose, - Romans 8:28
+   As it is written, the first Adam became a living soul, the last Adam became a life giving Spirit - 1 Corinthians 15:45
+   And you, though dead in your offenses and sins, - Ephesians 2:1   
+
+   # Tell diyr the file contains verses with references (-t verse_references), then tell it
+   # to quiz you on the verse references (-r)
+   # The number of words to be hollowed out can be increased using the '-l' flag:
+
+   $ diyr -f ~/verse_references.txt -l 8 -t referenced_verses -r
+
 Example Output
 ##############
 
@@ -62,18 +83,7 @@ Example Output
 Delta's will be printed when a line is inputted incorrectly.
 Example with a file containing verses with their corresponding verse refrences:
 
-.. code-block::
-
-   diyr -t referenced_verses -f example_format_types/verse_references.txt -l 8
-   _____ __ now then __ condemnation __ those who ___ __ ______ ______ Romans 8:1
-   There is now then no condemnation to those who are in Christ Jesus. Romans 8:1
-   Amen!
-   For __ know that all ______ work together ___ ____ to those ___ love God, __ those who are called according __ ___ purpose, Romans 8:28
-   For we know that all things work together for good to those who love God, to those who are called according to His purpose, Romans 8:28
-   Amen!
-   As it is ________ ___ first ____ ______ _ living soul, the ____ Adam became a ____ giving ______ 1 Corinthians 15:45
-
-Example output when using diyr when specifiying a book and chapter:
+Example output when using diyr when specifiying a book and chapter (must be connected to internet):
 
 .. code-block::
 
