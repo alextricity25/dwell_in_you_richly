@@ -20,10 +20,10 @@ class Outline(BaseFormatClass):
         # Grammers defined here
         self.roman_letters = "IVX"
         self.roman_letters_small = 'ivx'
-        self.points = OneOrMore(Word(self.roman_letters +
+        self.points = Word(self.roman_letters +
                                      alphas +
                                      nums +
-                                     self.roman_letters_small))
+                                     self.roman_letters_small)
         self.point_identifier = self.points + "."
 
         self.chapter_and_verse = Word(nums) + \
@@ -40,6 +40,7 @@ class Outline(BaseFormatClass):
         self.verses = self.abbriv + self.verse_list
         
         # Grammer to match the line on an outline
+        #verse_references = " - " + Group(ZeroOrMore(self.verses))
         self.line_grammer = Group(Optional(self.point_identifier)) + \
                             Group(self.verse) + \
                             Optional("-") + \

@@ -33,8 +33,12 @@ class BaseFormatClass():
         # the formatter drivers can use.
         # Each word in a verse can be composed of any letter
         # in the english alphabet, plus grammer characters.
-        bible_grammer_chars = '.,?;!\'/'
-        self.verse_word = Word(alphas + bible_grammer_chars)
+        bible_grammer_chars = '.,?;!\'/()'
+        # A dashed word is a token with more then just 2 characters.
+        # The minimum restrictions is placed so that only dashes
+        # are not matched as words in a string literal
+        dashed_word = Word(alphas + bible_grammer_chars + "-", min = 2)
+        self.verse_word = Word(alphas + bible_grammer_chars) ^ dashed_word
         self.verse = OneOrMore(self.verse_word)
 
         logging.debug("Stream line is: {}".format(self.stream))
