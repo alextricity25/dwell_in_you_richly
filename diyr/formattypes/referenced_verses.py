@@ -55,6 +55,9 @@ class ReferencedVerses(BaseFormatClass):
             # consumer has a way of knowing if the identifer should
             # go before the line starts, or after the line starts.
             self.result['extras'] = {
-                'identifier_position': 'after'
+                'identifier_position': 'off'
+            }
+            self.result['extras']['verse_references'] = {
+                self.result['identifier']
             }
             yield self.result

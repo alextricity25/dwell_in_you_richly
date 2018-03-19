@@ -32,6 +32,9 @@ class CommandLineRunner():
                     verse,
                     identifier).lower().strip()
                 print "{} - {}".format(hollowed_verse, identifier)
+            elif line['extras'].get("identifier_position", '') == 'off':
+                expected_input = verse.lower().strip()
+                print hollowed_verse
             else:
                 expected_input = "{}{}".format(
                     identifier,
