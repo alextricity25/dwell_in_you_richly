@@ -38,17 +38,27 @@ class CommandLineRunner():
                     [user_input.lower() + '\n'],
                     [expected_input + '\n']))
                 print "Incorrect. Delta show below:"
+                print "-"*25
                 sys.stdout.writelines(result)
+                print "-"*25
                 if self.parsed_args.nail_it:
                     print "WRONG! NAIL IT MODE ENABLED!" + "-" * 15
                     for i in xrange(0,3):
                         expected_input = self._test_verse(hollowed_verse, identifier, verse, line)
                         user_input = raw_input()
                         if user_input.lower().strip() == expected_input:
+                            print "\n"*100
                             print "YES!"
+                            if i < 2: print "AGAIN!:"
                         else:
-                            print "NO! GO AGAIN!"
-                    print "-" * 23
+                            result = list(d.compare(
+                                [user_input.lower() + '\n'],
+                                [expected_input + '\n']))
+                            print "\n"*100
+                            print "NO! DELTA IS BELOW:"
+                            sys.stdout.writelines(result)
+                            if i < 2: print "TRY AGAIN:"
+                    print "NAIL IT MODE COMPLETE. RESUMING AT NEXT LINE.." + "-" * 10
 
             if line['extras'].get('verse_references', '') and self.parsed_args.test_references:
                 verses = ''.join(line['extras']['verse_references']).split(';')
