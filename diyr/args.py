@@ -93,5 +93,12 @@ parser.add_argument(
     required = False
 )
 
+parser.add_argument(
+    '--nail-it',
+    '-n',
+    action = 'store_true',
+    required = False
+)
+
 def get_parser():
     return parser

@@ -27,19 +27,7 @@ class CommandLineRunner():
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
             identifier = line['identifier']
-            if line['extras'].get("identifier_position", '') == 'after':
-                expected_input = "{} - {}".format(
-                    verse,
-                    identifier).lower().strip()
-                print "{} - {}".format(hollowed_verse, identifier)
-            elif line['extras'].get("identifier_position", '') == 'off':
-                expected_input = verse.lower().strip()
-                print hollowed_verse
-            else:
-                expected_input = "{}{}".format(
-                    identifier,
-                    verse).lower().strip()
-                print "{}{}".format(identifier, hollowed_verse)
+            expected_input = self._test_verse(hollowed_verse, identifier, verse, line)
             logging.debug("Expecting user input: {}".format(expected_input))
             user_input = raw_input()
             if user_input.lower().strip() == expected_input:
@@ -51,6 +39,16 @@ class CommandLineRunner():
                     [expected_input + '\n']))
                 print "Incorrect. Delta show below:"
                 sys.stdout.writelines(result)
+                if self.parsed_args.nail_it:
+                    print "WRONG! NAIL IT MODE ENABLED!" + "-" * 15
+                    for i in xrange(0,3):
+                        expected_input = self._test_verse(hollowed_verse, identifier, verse, line)
+                        user_input = raw_input()
+                        if user_input.lower().strip() == expected_input:
+                            print "YES!"
+                        else:
+                            print "NO! GO AGAIN!"
+                    print "-" * 23
 
             if line['extras'].get('verse_references', '') and self.parsed_args.test_references:
                 verses = ''.join(line['extras']['verse_references']).split(';')
@@ -79,3 +77,15 @@ class CommandLineRunner():
                         print "Amen!"
                     else:
                         print "Wrong. The verse reference is: {}".format(verse)
+
+    def _test_verse(self, hollowed_verse, identifier, verse, line):
+        identifier_prop = line['extras'].get("identifier_position", '')
+        if identifier_prop == 'after':
+            print "{} - {}".format(hollowed_verse, identifier)
+            return "{} - {}".format(verse, identifier).lower().strip()
+        elif identifier_prop == 'off':
+            print hollowed_verse
+            return verse.lower().strip()
+        else:
+            print "{}{}".format(identifier, hollowed_verse)
+            return "{}{}".format(identifier, verse).lower().strip()
