@@ -103,3 +103,9 @@ Example output when using diyr when specifiying a book and chapter (must be conn
    + 3.for that which the law could not do, in that it was weak through the flesh, god, sending his own son in the likeness of the flesh of sin and concerning sin, condemned sin in the flesh,
    ?                                                                                                                                                                   ++
    
+Enabling 'NAIL-IT' mode
+#######################
+
+NAIL-IT Modes helps the user really get the content into them by prompting them to re-enter any incorrectly typed line three times.
+
+To enable 'NAIL-IT' mode, use the `-n` flag. 
