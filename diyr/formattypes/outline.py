@@ -37,7 +37,9 @@ class Outline(BaseFormatClass):
         self.verse_list = OneOrMore(
                               self.listed_verse_grammer ^
                               self.chapter_and_verse)
-        self.verses = self.abbriv + self.verse_list
+        self.verses = Optional(Word(nums)) + \
+                      self.abbriv + \
+                      self.verse_list
         
         # Grammer to match the line on an outline
         #verse_references = " - " + Group(ZeroOrMore(self.verses))
