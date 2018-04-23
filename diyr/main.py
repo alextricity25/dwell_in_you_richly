@@ -13,6 +13,7 @@ import logging
 import os
 from diyr import args
 from diyr.command_line import CommandLineRunner
+
 # MAPS COMMAND LINE TYPES TO FORMATTERS
 FORMAT_MAPPER = {
     "listed_verses": "ListedVerses",
@@ -22,6 +23,11 @@ FORMAT_MAPPER = {
 
 ENGINE_MAPPER = {
     'fitb': 'FillInTheBlank'
+}
+
+SINK_MAPPER = {
+    'shuffle': 'Shuffle',
+    'nothing': 'NothingSink'
 }
 
 
@@ -66,12 +72,27 @@ def main():
     # Engine we want to use
     # Import the respective engine
     engine_module = __import__('diyr.engines.{}'.format(
-                             parsed_args.mode),
-                             fromlist = ['blah'])
+                                parsed_args.mode),
+                                fromlist = ['blah'])
     engine_class = getattr(engine_module,
                            ENGINE_MAPPER[parsed_args.mode])
     engine = engine_class(formatter, level = parsed_args.level)
-    runner = CommandLineRunner(engine, parsed_args)
+
+    # Time for the sinks to do their thing!
+    # At this time only the shuffle sink is available.
+    if parsed_args.shuffle:
+        sink_name = "shuffle"
+    else:
+        sink_name = "nothing"
+    sink_module = __import__('diyr.sinks.{}'.format(
+                              sink_name),
+                              fromlist = ['blah'])
+    sink_class = getattr(sink_module,
+                         SINK_MAPPER[sink_name])
+    sink = sink_class(engine)
+    data = sink.process()
+
+    runner = CommandLineRunner(data, parsed_args)
     runner.run()
  
 

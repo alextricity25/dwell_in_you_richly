@@ -16,16 +16,16 @@ from diyr.utils.bible import Bible
 
 class CommandLineRunner():
 
-    def __init__(self, engine, parsed_args):
+    def __init__(self, data, parsed_args):
         self.parsed_args = parsed_args
-        self.engine = engine
+        self.data = data
         self.bible = Bible()
         self.num_correct = 0
         self.line_count = 0
 
 
     def run(self):
-        for line in self.engine.run_engine():
+        for line in self.data:
             self.line_count += 1
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
