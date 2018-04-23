@@ -21,7 +21,8 @@ class OnlineSourceClass(BaseSourceClass):
 
     def __init__(self, url = "", book = "", chapter = ""):
         logging.debug("Initializing OnlineSourceClass...")
-        self.BIBLE = Bible().BIBLE
+        self.bible_utils = Bible()
+        self.BIBLE = self.bible_utils.BIBLE
         self.book = book
         self.chapter = chapter
         BaseSourceClass.__init__(self, source = url)
@@ -33,7 +34,7 @@ class OnlineSourceClass(BaseSourceClass):
     def get_stream(self):
         retries = 0
         status_code = 0
-        while status_code != 200 and retries < 5:
+        while retries < 5:
             logging.debug("Number of retries: {}".format(retries))
 
             # If book and chapter are given, then simply set the
@@ -45,51 +46,21 @@ class OnlineSourceClass(BaseSourceClass):
                 chapter_number = self.chapter
             else:
                 # Randomize the book
+                #TODO: There is an easier way to pick a random element
+                # from an array using the random library
                 book_number = random.randint(1, len(self.BIBLE.keys()))
                 book_name = list(self.BIBLE.keys())[book_number]
                 chapter_number = random.randint(1, int(self.BIBLE[book_name]['chapters']))
-            # This is the URL that online.recoveryversion
-            # uses for the text based version of the Bible.
-            # Take note of the one-off number due to indicies starting at zero
-            url = "{}/{}_{}{}.htm".format(
-                      self.source,
-                      book_number + 1,
-                      # Spaces are removed to deal with
-                      # book names that include a number.
-                      # i.e. "1 Corinthians"
-                      book_name.replace(" ", ""),
-                      chapter_number)
-            logging.info("Sending request to {}".format(url))
-            r = requests.get(url)
-            status_code = r.status_code
-            logging.debug("Status code for this attempt: {}".format(status_code))
 
-            # If status_code is not 201, there is no
-            # need to continue with this iteration.
-            # Instead, we are going to randomize the
-            # bible again and retry the request.
-            if status_code != 200:
-                logging.info("Status code does not equal 200, retrying...")
+            try:
+                verses_list = self.bible_utils.get_online_chapter(book_name, chapter_number)
+                break
+            except Exception as e:
+                logging.info("Exception from get_online_chapter")
+                logging.info(e.message)
                 retries += 1
                 continue
 
-            chapter_html = r.text
-            soup = BeautifulSoup(chapter_html, 'html.parser')
-            verses_list_soup = soup.get_text().split('\n')
-            # Clean up verses list
-            # This is being done because some non alphanumeric
-            # ASCII characters might have been picked up from the
-            # web scraper
-            verses_list = []
-            verse_num = 1
-            for verse in verses_list_soup:
-                verse = self._remove_non_ascii(verse)
-                if re.search(r'[0-9]+:[0-9]+', verse):
-                    verses_list.append(
-                         re.sub(r'[0-9]+:[0-9]+',
-                                str(verse_num) + ".",
-                                verse))
-                    verse_num += 1
         print "The book {} chapter {} will be used".format(
             book_name,
             chapter_number)
@@ -97,8 +68,7 @@ class OnlineSourceClass(BaseSourceClass):
         # If max retires was hit, throw an error
         if retries >= 5:
             logging.warn("The maximum amount of retires has been exceeded!")
-            logging.warn("Could not successfully locate url {}".format(url))
-            raise Exception("Cloud not find bible at: {}:".format(url))
+            raise Exception("Cloud not find book and chapter! Please try again!")
         return verses_list
 
     def _remove_non_ascii(self, text):

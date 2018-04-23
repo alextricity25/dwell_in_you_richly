@@ -8,8 +8,10 @@
 # http://www.gnu.org/licenses/gpl.html
 # =============================================================================
 import re
-import pdb
+import requests
+import logging
 from collections import OrderedDict
+from bs4 import BeautifulSoup
 
 class Bible():
 
@@ -99,3 +101,73 @@ class Bible():
 
     def return_abbriv(self, book):
         return self.BIBLE[book]['abbriv']
+
+    def build_recovery_online_url(self, book_name, book_chapter):
+        """
+        Returns a string composing the url of the online.recoveryversion.bible
+        of the given book name and chapter
+        TODO: Write notes here about how that URL is composed, and what is expected
+        by online.recoveryversion.bible
+        """
+        base_url = "http://online.recoveryversion.bible/txo"
+        return "{}/{}_{}{}.htm".format(
+                                base_url,
+                                self.get_book_number(book_name),
+                                # Spaces are removed to deal with book names
+                                # that include a number. i.e. 1 Corinthians
+                                book_name.replace(" ", ""),
+                                book_chapter)
+
+    def get_online_chapter(self, book_name, book_chapter):
+        """
+        Retrieves an entire chapter of a book in the Bible in the form of a
+        list
+        """
+        url = self.build_recovery_online_url(book_name, book_chapter)
+        logging.debug("Looking up chapter at URL: {}".format(url))
+        r = requests.get(url)
+        if r.status_code != 200:
+            logging.error("Could not look up {} {} at URL {}".format(
+                book_name,
+                book_chapter,
+                url))
+            raise Exception("Could not look up {} {} at URL {}".format(
+                book_name,
+                book_chapter,
+                url))
+        chapter_html = r.text
+        soup = BeautifulSoup(chapter_html, 'html.parser')
+        verses_list_soup = soup.get_text().split('\n')
+        # Clean up verses list. This is being done because some
+        # non-alphanumeric ASCII characters might have been picked up from the
+        # web scraper
+        verses_list = []
+        verse_num = 1
+        for verse in verses_list_soup:
+            verse = self._remove_non_ascii(verse)
+            if re.search(r'[0-9]+:[0-9]+', verse):
+                verses_list.append(
+                    re.sub(r'[0-9]+:[0-9]+',
+                           str(verse_num) + ".",
+                           verse))
+                verse_num += 1
+
+        logging.debug("Successfully built list for {} chapter {}".format(
+            book_name,
+            book_chapter))
+
+        return verses_list
+
+    def verse_lookup(self, book_name, book_chapter, verse):
+        """
+        Looks up a verse from online.recoveryversion.bible, then returns it.
+        """
+        verses_list = self.get_online_chapter(book_name, str(book_chapter))
+        return verses_list[int(verse) - 1]
+
+    def get_book_number(self, book):
+        # Adding one because lists are indexted starting with zero
+        return self.BIBLE.keys().index(book) + 1
+
+    def _remove_non_ascii(self, text):
+        return ''.join(i for i in text if ord(i)<128)
