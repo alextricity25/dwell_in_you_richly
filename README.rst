@@ -109,3 +109,7 @@ Enabling 'NAIL-IT' mode
 NAIL-IT Modes helps the user really get the content into them by prompting them to re-enter any incorrectly typed line three times.
 
 To enable 'NAIL-IT' mode, use the `-n` flag. 
+
+Shuffling the data
+##################
+The data can be shuffled using the `-s` flag.
