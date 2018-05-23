@@ -23,6 +23,7 @@ setup(
         'diyr.engines',
         'diyr.sources',
         'diyr.utils',
+        'diyr.sinks'
     ],
     install_requires = ['pyparsing', 'beautifulsoup4', 'requests'],
     package_data = {
