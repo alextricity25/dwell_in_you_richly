@@ -26,6 +26,7 @@ ENGINE_MAPPER = {
 }
 
 SINK_MAPPER = {
+    'seek': 'SeekSinkClass',
     'shuffle': 'Shuffle',
     'nothing': 'NothingSink'
 }
@@ -82,6 +83,8 @@ def main():
     # At this time only the shuffle sink is available.
     if parsed_args.shuffle:
         sink_name = "shuffle"
+    elif parsed_args.pattern:
+        sink_name = "seek"
     else:
         sink_name = "nothing"
     sink_module = __import__('diyr.sinks.{}'.format(
@@ -89,7 +92,10 @@ def main():
                               fromlist = ['blah'])
     sink_class = getattr(sink_module,
                          SINK_MAPPER[sink_name])
-    sink = sink_class(engine)
+    sink = sink_class(
+        engine,
+        pattern = parsed_args.pattern if parsed_args.pattern else ''
+    )
     data = sink.process()
 
     runner = CommandLineRunner(data, parsed_args)
