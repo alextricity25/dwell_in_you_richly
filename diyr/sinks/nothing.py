@@ -22,4 +22,10 @@ class NothingSink(BaseSinkClass):
         
     def process(self):
 
+        # TODO: Make this a generator?
+        """
+        It might be good to have this return a generator rather than a list.
+        This is so that the program doesn't delay gathering all the lines
+        of the input stream when running in interactive mode
+        """
         return self._collect_data()
