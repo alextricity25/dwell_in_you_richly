@@ -16,7 +16,7 @@ from diyr.sinks.base import BaseSinkClass
 class Shuffle(BaseSinkClass):
 
     def __init__(self, engine, **kwargs):
-        logging.debug("Initializing Suuffle Class...") 
+        logging.debug("Initializing Shuffle Class...")
         BaseSinkClass.__init__(self, engine, **kwargs)
         
     def process(self):
