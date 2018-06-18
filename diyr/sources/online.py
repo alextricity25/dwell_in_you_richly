@@ -53,7 +53,7 @@ class OnlineSourceClass(BaseSourceClass):
                 chapter_number = random.randint(1, int(self.BIBLE[book_name]['chapters']))
 
             try:
-                verses_list = self.bible_utils.get_online_chapter(book_name, chapter_number)
+                verses_list = self.bible_utils.get_chapter(book_name, chapter_number)
                 break
             except Exception as e:
                 logging.info("Exception from get_online_chapter")

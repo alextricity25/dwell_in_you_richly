@@ -10,6 +10,7 @@
 import re
 import requests
 import logging
+import os
 from collections import OrderedDict
 from bs4 import BeautifulSoup
 
@@ -118,10 +119,60 @@ class Bible():
                                 book_name.replace(" ", ""),
                                 book_chapter)
 
-    def get_online_chapter(self, book_name, book_chapter):
+    def get_chapter(self, book_name, book_chapter, cache_chapter = True):
+        """
+        Returns a chapter of the bible, first checking to see if that
+        chapter is on disk. If not, hen it attempts to fetch it from
+        the internet.
+
+        NOTE: This is public facing method. If the method signature changes,
+              then it needs to be documented and backwards-compatablity
+              needs to be preserved.
+        """
+
+        try:
+            logging.debug("Attempting to read chapter from disk")
+            verses_list = self._get_ondisk_chapter(book_name, book_chapter)
+        except Exception as e:
+            logging.debug("Could not read file from disk. Attempting the internet..")
+            logging.debug(e.message)
+            verses_list = self._get_online_chapter(book_name, book_chapter,
+                cache_chapter = cache_chapter)
+        return verses_list
+
+    def _get_ondisk_chapter(self, book_name, book_chapter):
+        """
+        Retrieves the given bible chapter from it's on disk location.
+        Currently, the location `~/.diyr/<book_name>/` is supported
+        """
+        # First attempt to look up the chapter on the disk
+        verses_list = []
+        filename = os.path.expanduser("~/.diyr/{}/{}").format(
+            book_name,
+            book_chapter)
+        if os.path.isfile(filename):
+            # Read the file into a list
+            try:
+                f = open(filename)
+            except OSError as e:
+                logging.error("Could not read {}".format(filename))
+                return ["ERROR! Could not read {}".format(filename)]
+
+            for line in f.readlines():
+                verses_list.append(line)
+
+            return verses_list
+        else:
+            # If the file is not cached, raise an Exception
+            raise Exception("The file {} is not cached!".format(filename))
+
+    def _get_online_chapter(self, book_name, book_chapter,
+        cache_chapter):
         """
         Retrieves an entire chapter of a book in the Bible in the form of a
-        list
+        list.
+        If cache_chapter is "True", this method will cache the chapter
+        in "~/.diyr/bible/<book>/<chapter>.txt".
         """
         url = self.build_recovery_online_url(book_name, book_chapter)
         logging.debug("Looking up chapter at URL: {}".format(url))
@@ -156,13 +207,34 @@ class Bible():
             book_name,
             book_chapter))
 
+        # If cache_chapter is True, then write it to disk
+        if cache_chapter:
+            base_dir = os.path.expanduser("~/.diyr")
+            book_dir = "{}/{}".format(base_dir, book_name)
+            chapter_file = "{}/{}".format(book_dir, book_chapter)
+            # Ensure ~/.diyr/ directory exists
+            if not os.path.isdir(base_dir):
+                os.mkdir(base_dir)
+            # Ensure the chapter directory exists
+            if not os.path.isdir(book_dir):
+                os.mkdir(book_dir)
+            # IF the file doesn't already exists, then write to it the
+            # contents of the chapter
+            if not os.path.isfile(chapter_file):
+                f = open(chapter_file, 'w')
+                f.write("\n".join(verses_list))
+                f.close()
+
         return verses_list
 
-    def verse_lookup(self, book_name, book_chapter, verse):
+    def verse_lookup(self, book_name, book_chapter, verse, cache_chapter = True):
         """
         Looks up a verse from online.recoveryversion.bible, then returns it.
         """
-        verses_list = self.get_online_chapter(book_name, str(book_chapter))
+        verses_list = self.get_chapter(
+            book_name,
+            str(book_chapter),
+            cache_chapter = cache_chapter)
         return verses_list[int(verse) - 1]
 
     def get_book_number(self, book):
