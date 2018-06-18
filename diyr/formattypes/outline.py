@@ -9,7 +9,7 @@
 # =============================================================================
 import logging
 
-from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional, ZeroOrMore
+from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional, ZeroOrMore, White
 from diyr.formattypes.base import BaseFormatClass
 
 class Outline(BaseFormatClass):
@@ -43,7 +43,8 @@ class Outline(BaseFormatClass):
         
         # Grammer to match the line on an outline
         #verse_references = " - " + Group(ZeroOrMore(self.verses))
-        self.line_grammer = Group(Optional(self.point_identifier)) + \
+        self.line_grammer = Group(Optional(White())) + \
+                            Group(Optional(self.point_identifier)) + \
                             Group(self.verse) + \
                             Optional("-") + \
                             Group(ZeroOrMore(self.verses))
@@ -53,16 +54,18 @@ class Outline(BaseFormatClass):
             logging.debug("Parsing line {}".format(line))
             parsed_line = self.line_grammer.parseString(line)
             #pdb.set_trace()
-            self.result['body'] = parsed_line[1]
+            self.result['body'] = parsed_line[2]
             logging.debug("Body for this line is: {}".format(
                 self.result['body']))
             # The identifier for each line when this file format is
             # used is the point identifier
-            self.result['identifier'] = ''.join(parsed_line[0])
+            self.result['identifier'] = ''.join(parsed_line[1])
             logging.debug("Identifier for this line is {}".format(
                 self.result['identifier']))
             self.result['extras'] = {
                 'verse_references': parsed_line[-1] }
+            self.result['extras'] = {
+                'leading_white': ''.join(parsed_line[0]) }
             logging.debug("Extras for this line are: {}".format(
                 self.result['extras']))
             yield self.result

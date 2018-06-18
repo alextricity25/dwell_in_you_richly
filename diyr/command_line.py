@@ -30,7 +30,15 @@ class CommandLineRunner():
             hollowed_verse = ' '.join(line['body'][1])
             verse = ' '.join(line['body'][0])
             identifier = line['identifier']
-            expected_input = self._test_verse(hollowed_verse, identifier, verse, line)
+            # _test_verse is where the verse is printed.
+            # It returns what the user is expected to input as a correct
+            # answer.
+            expected_input = self._test_verse(
+                hollowed_verse,
+                identifier,
+                verse,
+                line,
+                leading_white = line['extras'].get('leading_white', ''))
             logging.debug("Expecting user input: {}".format(expected_input))
             if not self.parsed_args.generate:
                 user_input = raw_input()
@@ -103,14 +111,14 @@ class CommandLineRunner():
                     else:
                         print "Wrong. The verse reference is: {}".format(verse)
 
-    def _test_verse(self, hollowed_verse, identifier, verse, line):
+    def _test_verse(self, hollowed_verse, identifier, verse, line, leading_white = ''):
         identifier_prop = line['extras'].get("identifier_position", '')
         if identifier_prop == 'after':
-            print "{} - {}".format(hollowed_verse, identifier)
+            print "{}{} - {}".format(leading_white, hollowed_verse, identifier)
             return "{} - {}".format(verse, identifier).lower().strip()
         elif identifier_prop == 'off':
-            print hollowed_verse
+            print "{}{}".format(leading_white, hollowed_verse)
             return verse.lower().strip()
         else:
-            print "{}{}".format(identifier, hollowed_verse)
-            return "{}{}".format(identifier, verse).lower().strip()
+            print "{}{} {}".format(leading_white, identifier, hollowed_verse)
+            return "{} {}".format(identifier, verse).lower().strip()
