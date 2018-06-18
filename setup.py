@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = "diyr",
-    version = "0.0.1a11",
+    version = "0.0.1a12",
     author = "Miguel Alex Cantu",
     author_email = "miguel.can2@gmail.com	",
     description = ("An interactive program that hollows out text files"
@@ -31,7 +31,7 @@ setup(
     },
     long_description=read('README.rst'),
     url = 'https://github.com/alextricity25/dwell_in_you_richly',
-    download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1a11.tar.gz',
+    download_url = 'https://github.com/alextricity25/dwell_in_you_richly/archive/0.0.1a12.tar.gz',
     entry_points = {
         'console_scripts': [
             'diyr = diyr.main:main'
