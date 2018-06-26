@@ -12,6 +12,8 @@ import logging
 from pyparsing import Word, alphas, OneOrMore, nums, Group, Optional, ZeroOrMore, White
 from diyr.formattypes.base import BaseFormatClass
 
+import pdb
+
 class Outline(BaseFormatClass):
 
     def __init__(self, stream):
@@ -42,7 +44,6 @@ class Outline(BaseFormatClass):
                       self.verse_list
         
         # Grammer to match the line on an outline
-        #verse_references = " - " + Group(ZeroOrMore(self.verses))
         self.line_grammer = Group(Optional(White())) + \
                             Group(Optional(self.point_identifier)) + \
                             Group(self.verse) + \
@@ -53,7 +54,6 @@ class Outline(BaseFormatClass):
         for line in self.stream:
             logging.debug("Parsing line {}".format(line))
             parsed_line = self.line_grammer.parseString(line)
-            #pdb.set_trace()
             self.result['body'] = parsed_line[2]
             logging.debug("Body for this line is: {}".format(
                 self.result['body']))
@@ -63,9 +63,9 @@ class Outline(BaseFormatClass):
             logging.debug("Identifier for this line is {}".format(
                 self.result['identifier']))
             self.result['extras'] = {
-                'verse_references': parsed_line[-1] }
-            self.result['extras'] = {
-                'leading_white': ''.join(parsed_line[0]) }
+                'verse_references': parsed_line[-1],
+                'leading_white': ''.join(parsed_line[0])
+            }
             logging.debug("Extras for this line are: {}".format(
                 self.result['extras']))
             yield self.result
