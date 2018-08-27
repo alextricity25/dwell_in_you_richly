@@ -218,7 +218,7 @@ class Bible():
             # Ensure the chapter directory exists
             if not os.path.isdir(book_dir):
                 os.mkdir(book_dir)
-            # IF the file doesn't already exists, then write to it the
+            # If the file doesn't already exists, then write to it the
             # contents of the chapter
             if not os.path.isfile(chapter_file):
                 f = open(chapter_file, 'w')

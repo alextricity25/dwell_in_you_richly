@@ -45,7 +45,6 @@ class ReferencedVerses(BaseFormatClass):
                 self.result['body']))
             # The identifier for each line when this file format is used
             # is the verse reference
-            #self.result['identifier'] = parsed_line[1]
             self.result['identifier'] = "{} {}".format(
                 ' '.join(parsed_line[1][:-1]), 
                 ''.join(parsed_line[1][-1]))
