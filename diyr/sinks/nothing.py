@@ -22,10 +22,10 @@ class NothingSink(BaseSinkClass):
         
     def process(self):
 
-        # TODO: Make this a generator?
         """
-        It might be good to have this return a generator rather than a list.
-        This is so that the program doesn't delay gathering all the lines
-        of the input stream when running in interactive mode
+	This function returns the generator produced by the engine. Since there
+        is nothing to do here, there is no need to collect *all* the data that
+        the engine produces at once. We can just allow the engine to return the
+        data iteratively.
         """
-        return self._collect_data()
+        return self.engine.run_engine()
