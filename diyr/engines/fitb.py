@@ -18,6 +18,92 @@ class FillInTheBlank(BaseEngineClass):
         # kwargs desc:
         #    level = [0-9]+: How many words
         #    in the line to replace
+
+        self.excluded_words = [
+            "also",
+            "an",
+            "and",
+            "another",
+            "any",
+            "are",
+            "as",
+            "at",
+            "be",
+            "because",
+            "been",
+            "being",
+            "both",
+            "but",
+            "by",
+            "came",
+            "can",
+            "did",
+            "do",
+            "each",
+            "for",
+            "has",
+            "had",
+            "he",
+            "have",
+            "her",
+            "here",
+            "him",
+            "himself",
+            "his",
+            "how",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "like",
+            "make",
+            "me",
+            "might",
+            "much",
+            "my",
+            "of",
+            "on",
+            "or",
+            "our",
+            "out",
+            "over",
+            "said",
+            "should",
+            "since",
+            "some",
+            "still",
+            "such",
+            "take",
+            "than",
+            "that",
+            "the",
+            "their",
+            "them",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "those",
+            "to",
+            "too",
+            "very",
+            "was",
+            "way",
+            "we",
+            "well",
+            "were",
+            "what",
+            "where",
+            "which",
+            "while",
+            "who",
+            "with",
+            "would",
+            "you",
+            "your",
+        ]
         BaseEngineClass.__init__(self, formatter, **kwargs)
         logging.debug("Initializing FillInTheBlank...")
         self.n_replace_words = kwargs.get('level', 2)
@@ -34,11 +120,15 @@ class FillInTheBlank(BaseEngineClass):
         for line in self.formatter.get_result():
             # Number of possible worlds in this line that can
             # can be replaced.
-            # NOTE(alextricity25) For now, the possible number
-            # of words the engine can replace will be the number
-            # of all the words in a sentence. This will change
-            # once we add the ability to exclude certain words.
-            possible_rep_words = len(line['body'])
+            # The number of negative words that exist in the
+            # line need to be counted so that we know how many to exclude
+            # from the number of possible words that can be excluded.
+            negatives = 0
+            for word in line['body']:
+                if word.lower() in self.excluded_words:
+                    negatives += 1
+
+            possible_rep_words = len(line['body']) - negatives
             logging.debug(("Number of words that can be possibly " +
                            "replaced: {}".format(possible_rep_words)))
             # We want to preserve the line witout the replacements,
@@ -72,8 +162,8 @@ class FillInTheBlank(BaseEngineClass):
                 # n_replace_word is exceeded.
                 logging.debug("Attempting to replace the word: {}".format(
                     new_line[random_index]))
-                while random_index in replaced_indicies:
-                    logging.debug(("This word has already been replaced. " +
+                while random_index in replaced_indicies or new_line[random_index] in self.excluded_words:
+                    logging.debug(("This word has already been replaced or is a negative. " +
                                    "Randomizing again..."))
                     random_index = random.randint(0, upper_l)
                 
