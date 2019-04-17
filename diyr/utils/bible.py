@@ -239,7 +239,9 @@ class Bible():
 
     def get_book_number(self, book):
         # Adding one because lists are indexted starting with zero
-        return self.BIBLE.keys().index(book) + 1
+        return '{:02d}'.format(
+                   self.BIBLE.keys().index(book) + 1
+               )
 
     def _remove_non_ascii(self, text):
         return ''.join(i for i in text if ord(i)<128)
